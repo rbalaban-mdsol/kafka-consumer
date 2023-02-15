@@ -27,11 +27,12 @@ async function startConsumer() {
         eachMessage: async({
             topic, partition, message
         }) => {
+            consumerCount++
             console.log({
                 topic: topic,
-                messageCount: consumerCount
+                messageCount: consumerCount,
+                timestamp: new Date(Date.now())
             })
-            consumerCount++
         }
     })
 }

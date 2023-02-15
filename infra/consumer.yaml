@@ -26,7 +26,19 @@ spec:
     spec:
       containers:
         - name: app
-          image: 245522776103.dkr.ecr.us-east-1.amazonaws.com/meds_connected_devices_kafka_consumer:0.0.1
+          image: 245522776103.dkr.ecr.us-east-1.amazonaws.com/meds_connected_devices_kafka_consumer:0.0.4
           ports:
             - containerPort: 8080
           imagePullPolicy: Always
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 100
+          env:
+            - name: KAFKA_BROKERS
+              value: "b-1.msc-msk-sandbox.cd13os.c2.kafka.us-east-1.amazonaws.com:9092,b-3.msc-msk-sandbox.cd13os.c2.kafka.us-east-1.amazonaws.com:9092,b-2.msc-msk-sandbox.cd13os.c2.kafka.us-east-1.amazonaws.com:9092"
+            - name: KAFKA_TOPIC
+              value: "com.mdsol.avro.sensorcloud.observation"
